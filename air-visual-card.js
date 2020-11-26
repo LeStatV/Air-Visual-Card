@@ -6,14 +6,8 @@ class AirVisualCard extends HTMLElement {
     }
   
     setConfig(config) {
-      if (!config.air_pollution_level || config.air_pollution_level.split('.')[0] !== 'sensor') {
-        throw new Error("Please include the 'air pollution level' sensor.");
-      }
       if (!config.air_quality_index || config.air_quality_index.split('.')[0] !== 'sensor')  {
         throw new Error("Please include the 'air quality index' sensor.");
-      }
-      if (!config.main_pollutant || config.main_pollutant.split('.')[0] !== 'sensor')  {
-        throw new Error("Please include the 'main pollutant' sensor.");
       }
       if (!config.city) {
         config.city = '';
@@ -151,9 +145,8 @@ class AirVisualCard extends HTMLElement {
       const root = this.shadowRoot;
       const card = root.lastChild;
       this.myhass = hass;
-      const air_pollution_level = hass.states[config.air_pollution_level].state;
       const air_quality_index = hass.states[config.air_quality_index].state;
-      const main_pollutant = hass.states[config.main_pollutant].state;  
+      const main_pollutant = "PM2.5";  
       const svg_location = config.svg_location;
       const city = config.city || '';
       const faceIcon = {
@@ -221,6 +214,23 @@ class AirVisualCard extends HTMLElement {
         currentCondition = hass.states[config.temp].state;
       }
         
+      var air_pollution_level = '';
+      switch (true) {
+        case (air_quality_index < 50):
+          air_pollution_level = 'Good';
+        case (air_quality_index < 100):
+          air_pollution_level = 'Moderate';
+        case (air_quality_index < 150):
+          air_pollution_level = 'Unhealthy for Sensitive Groups';
+        case (air_quality_index < 200):
+          air_pollution_level = 'Unhealthy';
+        case (air_quality_index < 300):
+          air_pollution_level = 'Very Unhealthy';
+        case (air_quality_index < 9999):
+          air_pollution_level = 'Hazardous';
+        default:
+          air_pollution_level = 'Good';
+    }
 
 
 
