@@ -214,23 +214,25 @@ class AirVisualCard extends HTMLElement {
         currentCondition = hass.states[config.temp].state;
       }
         
-      var air_pollution_level = '';
-      switch (true) {
-        case (air_quality_index < 50):
-          air_pollution_level = 'Good';
-        case (air_quality_index < 100):
-          air_pollution_level = 'Moderate';
-        case (air_quality_index < 150):
-          air_pollution_level = 'Unhealthy for Sensitive Groups';
-        case (air_quality_index < 200):
-          air_pollution_level = 'Unhealthy';
-        case (air_quality_index < 300):
-          air_pollution_level = 'Very Unhealthy';
-        case (air_quality_index < 9999):
-          air_pollution_level = 'Hazardous';
-        default:
-          air_pollution_level = 'Good';
-    }
+      let getAPL = function () {
+        var APL = ``;
+        switch (true) {
+          case (air_quality_index < 50):
+            return APL = 'Good';
+          case (air_quality_index < 100):
+            return APL = 'Moderate';
+          case (air_quality_index < 150):
+            return APL = 'Unhealthy for Sensitive Groups';
+          case (air_quality_index < 200):
+            return APL = 'Unhealthy';
+          case (air_quality_index < 300):
+            return APL = 'Very Unhealthy';
+          case (air_quality_index < 9999):
+            return APL = 'Hazardous';
+          default:
+            return APL = 'Good';
+        }
+      };
 
 
 
@@ -275,7 +277,7 @@ class AirVisualCard extends HTMLElement {
             US AQI
           </div>
           <div class="apl" style="background-color: ${AQIbgColor[getAQI()]}; color: ${AQIfontColor[getAQI()]}">
-            ${air_pollution_level}
+            ${getAPL()}
             <br>
             <div class="pollutant">
               ${main_pollutant}
