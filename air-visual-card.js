@@ -9,16 +9,9 @@ class AirVisualCard extends HTMLElement {
       if (!config.air_quality_index || config.air_quality_index.split('.')[0] !== 'sensor')  {
         throw new Error("Please include the 'air quality index' sensor.");
       }
-      if (!config.city) {
-        config.city = '';
-      }
 
       if (!config.svg_location) {
         config.svg_location = 'default';
-      }
-
-      if (!config.temp) {
-        config.temp = '';
       }
       
       const root = this.shadowRoot;
@@ -148,7 +141,6 @@ class AirVisualCard extends HTMLElement {
       const air_quality_index = hass.states[config.air_quality_index].state;
       const main_pollutant = "PM2.5";  
       const svg_location = config.svg_location;
-      const city = config.city || '';
       const faceIcon = {
         '1': 'mdi:emoticon-excited',
         '2': 'mdi:emoticon-happy',
@@ -203,16 +195,6 @@ class AirVisualCard extends HTMLElement {
       
       let currentCondition = '';
       let faceHTML = '';
-      let temp = '';
-      if (config.temp.split('.')[0] == 'sensor') {
-        temp = hass.states[config.temp].state;
-        temp += 'º';
-      }
-      else if (config.temp.split('.')[0] == 'weather') {
-        temp = hass.states[config.temp].attributes['temperature'];     
-        temp += 'º';  
-        currentCondition = hass.states[config.temp].state;
-      }
         
       let getAPL = function () {
         var APL = ``;
@@ -266,8 +248,6 @@ class AirVisualCard extends HTMLElement {
       let card_content = ''     
       card_content += `
         <div class="grid-container" style="background-color: ${AQIbgColor[getAQI()]};">
-          <div class="city" style="background-color: #FFFFFF;">${city}</div>
-          <div class="temp"><ha-icon icon="${weatherIcons[currentCondition]}"></ha-icon>   ${temp}</div>
           <div class="face" style="background-color: ${AQIfaceColor[getAQI()]};">`
       card_content += faceHTML;
       card_content += `
