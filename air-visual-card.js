@@ -274,14 +274,10 @@ class AirVisualCard extends HTMLElement {
           </div>  
           <div class="aqi" style="background-color: ${AQIbgColor[getAQI()]}; color: ${AQIfontColor[getAQI()]}">
             <div style="font-size:3em;">${air_quality_index}</div>
-            US AQI
+            AQI
           </div>
           <div class="apl" style="background-color: ${AQIbgColor[getAQI()]}; color: ${AQIfontColor[getAQI()]}">
             ${getAPL()}
-            <br>
-            <div class="pollutant">
-              ${main_pollutant}
-            </div>
           </div>
         </div> 
       `      
